@@ -1,0 +1,529 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+
+
+
+   <!-- <android.support.constraint.ConstraintLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#d2e0e2"
+        tools:context="com.example.shahrozsaleem.bulkrenamerwizard.RenamerWizardActivity">-->
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#0f8d99"
+            android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="10dp"
+                >
+
+                <CheckBox
+                    android:id="@+id/prefixCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1"
+
+                    android:text="Add Prefix"
+                    android:textColor="#108ddb" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/prefixTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Prefix"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/prefixET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:maxLength="20"
+                        android:background="@drawable/round_edittext"
+                        android:hint="Enter Prefix"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_edittext"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                >
+
+                <CheckBox
+                    android:id="@+id/suffixCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Add Suffix"
+                    android:textColor="@android:color/holo_blue_dark" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/suffixTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Suffix"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/suffixET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:maxLength="20"
+                        android:background="@drawable/round_edittext"
+                        android:hint="Enter Suffix"
+                        android:layout_marginRight="10dp"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_edittext"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:orientation="vertical"
+                >
+
+                <CheckBox
+                    android:id="@+id/preNumCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Prefix Numbering"
+                    android:textColor="@android:color/holo_blue_dark"
+                    android:textColorLink="@color/colorAccent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/startFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Start From"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/startFromET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:maxLength="20"
+                        android:textColor="@color/colorAccent"
+                        android:layout_marginRight="10dp"
+                        android:hint="Enter Number"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/preNumRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/preNumRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Numeric"
+                        android:checked="true"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <RadioButton
+                        android:id="@+id/preAlphaRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Alphabetic"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <RadioButton
+                        android:id="@+id/preRomanRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Roman"
+                        android:textColor="@android:color/holo_blue_dark" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <CheckBox
+                    android:id="@+id/sufNumCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Suffix Numbering"
+                    android:textColor="@android:color/holo_blue_dark" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/suffixStartFrom"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Start From"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/suffixStartFromET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="10dp"
+                        android:maxLength="20"
+                        android:textColor="@color/colorAccent"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:hint="Enter Number"
+                        android:inputType="number"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/sufNumRG"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <RadioButton
+                        android:id="@+id/sufNumRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Numeric"
+                        android:checked="true"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <RadioButton
+                        android:id="@+id/sufAlphaRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Alphabetic"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <RadioButton
+                        android:id="@+id/sufRomanRB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Roman"
+                        android:textColor="@android:color/holo_blue_dark" />
+                </RadioGroup>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <CheckBox
+                    android:id="@+id/replaceStringCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Replace String"
+                    android:textColor="@android:color/holo_blue_dark" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/replaceStringTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textAlignment="center"
+                        android:text="Replace"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/replaceStringET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:textColor="@color/colorAccent"
+                        android:maxLength="20"
+                        android:layout_marginRight="10dp"
+                        android:hint="Enter String"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_weight="1"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/WithTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="With"
+                        android:textAlignment="center"
+                        android:textColor="@android:color/holo_blue_dark" />
+
+                    <EditText
+                        android:id="@+id/replaceWithET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:textColor="@color/colorAccent"
+                        android:maxLength="20"
+                        android:layout_marginRight="10dp"
+                        android:hint="Enter New String"
+                        android:inputType="textPersonName"
+                        android:textSize="14sp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+                >
+
+                <CheckBox
+                    android:id="@+id/allUpperCaseCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1"
+                    android:text="All Uppercase"
+                    android:textColor="@android:color/holo_blue_dark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <CheckBox
+                    android:id="@+id/allLowerCaseCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="All Lowercase"
+                    android:textColor="@android:color/holo_blue_dark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp">
+
+                <CheckBox
+                    android:id="@+id/firstLetterCapitalCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="First Letter Capital"
+                    android:textColor="@android:color/holo_blue_dark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round_edittext"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                >
+
+                <CheckBox
+                    android:id="@+id/removeCB"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Remove"
+                    android:textColor="#0f8ddb" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/betweenTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#0f8ddb"
+                        android:textAlignment="center"
+                        android:text="Between" />
+
+                    <EditText
+                        android:id="@+id/betweenET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="Enter String"
+                        android:inputType="textPersonName"
+                        android:maxLength="10"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/andTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="And"
+                        android:textAlignment="center"
+                        android:textColor="#0f8ddb" />
+
+                    <EditText
+                        android:id="@+id/andET"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/round_edittext"
+                        android:ems="10"
+                        android:hint="Enter String"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/colorAccent"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    <!--</android.support.constraint.ConstraintLayout>-->
+</ScrollView>

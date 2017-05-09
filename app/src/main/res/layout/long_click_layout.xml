@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+
+    <CheckBox
+        android:id="@+id/checkboxBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="center"
+        android:text="" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="35dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center_vertical"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/folder"
+        android:layout_marginLeft="2dp"
+        />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fileNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:text="TextView"
+            android:textSize="14sp"
+
+            />
+
+
+        <TextView
+            android:id="@+id/fileSizeTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:text="File Size"
+            android:textSize="10sp"
+            android:layout_alignStart="@+id/fileNameTV"
+            android:layout_alignBottom="@+id/dateModifiedTV" />
+
+
+        <TextView
+            android:id="@+id/dateModifiedTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Last Modified:"
+            android:textSize="12sp"
+            android:layout_marginEnd="15dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+
+
+</LinearLayout>

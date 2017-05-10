@@ -1,7 +1,6 @@
 package com.example.shahrozsaleem.bulkrenamerwizard;
 
 import android.content.Context;
-import android.os.Environment;
 import android.util.Log;
 import android.util.StringBuilderPrinter;
 import android.widget.Toast;
@@ -21,47 +20,78 @@ import java.util.regex.Pattern;
 public class Renamer {
 	
 	
-	private File mainFolder;
+	private static File mainFolder;
 	private ArrayList<File> files;
 	private ArrayList<File> subFolders;
     private static File wizardFile;
     private static Context context;
+    private long preFormattingDigits;
+    private long sufFormattingDigits;
     private Long preStartFrom = null;
     private Long sufStartFrom = null;
-
+    private static List<Wizard> renamerWizardList = new ArrayList<Wizard>();
 
 	public Renamer(String dirPath) {
-        Log.d("Constructor", "Called");
+
 		this.mainFolder = new File(dirPath);
 		files = new ArrayList<File>();
 		subFolders = new ArrayList<File>();
-		
-		// Checking whether the provided path is valid
-		
-		if(!(mainFolder.isDirectory())){
-			System.out.println("Not a valid path.");
-			return;
-		}
-		
+        setPreStartFrom();
+        setSufStartFrom();
+
 		separateFilesAndFolders();
 	}
 
 
+
 	public Renamer(File root, ArrayList<File> folders, ArrayList<File> files, File wizardFile, Context context){
-        Log.d("Constructor", "Called");
+
         this.mainFolder = root;
 		this.files = files;
 		this.subFolders = folders;
         this.wizardFile = wizardFile;
+        readWizard();
+        setPreStartFrom();
+        setSufStartFrom();
         //Toast.makeText(context, wizardFile.toString(), Toast.LENGTH_LONG).show();
         this.context = context;
 	}
 
-
-
-    void setMainFolder(File root){
-        mainFolder = root;
+    public void setPreStartFrom(){
+        Wizard preNum = renamerWizardList.get(2);
+        if(preNum.isChecked()){
+            preStartFrom = Long.parseLong(preNum.getParams().get(1));
+            setFormattingDigitsForPrefixNumbering(files.size()+preStartFrom);
+        }
     }
+
+    public void setSufStartFrom(){
+        Wizard sufNum = renamerWizardList.get(3);
+        if(sufNum.isChecked()){
+            sufStartFrom = Long.parseLong(sufNum.getParams().get(1));
+            setFormattingDigitsForSuffixNumbering(files.size()+sufStartFrom);
+        }
+    }
+
+
+    public void setFormattingDigitsForPrefixNumbering(long size) {
+        int i=0;
+        while(size > 0){
+            size /= 10;
+            i++;
+        }
+        this.preFormattingDigits = i;
+    }
+
+    public void setFormattingDigitsForSuffixNumbering(long size) {
+        int i=0;
+        while(size > 0){
+            size /= 10;
+            i++;
+        }
+        this.sufFormattingDigits = i;
+    }
+
 	
 	void separateFilesAndFolders(){
 		File[] folderContent = mainFolder.listFiles();
@@ -111,13 +141,17 @@ public class Renamer {
             return fileName.substring(lastIndex+1, fileName.length());
         return "";
     }
-	
-    String prefixNumberingInNumerics(String name){
-        //Log.d("Debug", pre+"");
-        return (preStartFrom++)+" "+name;
+
+    String prefixNumberingInNumerics(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
+        String flag = "%0"+String.valueOf(preFormattingDigits)+"d";
+        return (String.format(flag, preStartFrom++))+" "+name;
 	}
 
-	String prefixNumberinginAlpha(String name){
+	String prefixNumberinginAlpha(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
         long n = preStartFrom++;
         long r ;
         StringBuilder alpha = new StringBuilder();
@@ -130,7 +164,9 @@ public class Renamer {
         return alpha.toString()+" "+name;
     }
 
-	String prefixNumberingInRoman(String name){
+	String prefixNumberingInRoman(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
         String roman = getRoman((int) (long) preStartFrom++);
         if(roman.equals("Invalid Roman Number Value")) {
             Toast.makeText(context, "Roman Too Large", Toast.LENGTH_LONG).show();
@@ -199,12 +235,16 @@ public class Renamer {
         return s;
     }
 
-	String suffixNumberingInNumerics(String name){
-        return name+" "+(sufStartFrom++);
+	String suffixNumberingInNumerics(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
+        return name+" "+String.format("%0"+sufFormattingDigits+"d", sufStartFrom++);
     }
 
 
-    String suffixNumberinginAlpha(String name){
+    String suffixNumberinginAlpha(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
         long n = sufStartFrom++;
         long r ;
         StringBuilder alpha = new StringBuilder();
@@ -218,7 +258,9 @@ public class Renamer {
     }
 
 
-    String suffixNumberingInRoman(String name){
+    String suffixNumberingInRoman(String name, String fileName){
+        if(!fileName.equals("*"))
+            name = fileName;
         String roman = getRoman((int)(long) sufStartFrom++);
         if(roman.equals("Invalid Roman Number Value")) {
             Toast.makeText(context, "Roman Too Large", Toast.LENGTH_LONG).show();
@@ -229,7 +271,8 @@ public class Renamer {
         }
     }
 
-	private String getModifiedName(String name){
+
+    private void readWizard(){
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try {
@@ -239,98 +282,78 @@ public class Renamer {
             e.printStackTrace();
             Toast.makeText(context, "Something went wrong with wizard file.", Toast.LENGTH_LONG).show();
         }
+        Wizard wiz;
+        try {
+            while((wiz = (Wizard) ois.readObject())!= null){
+                renamerWizardList.add(wiz);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
+	private String getModifiedName(String name){
 
         //Add Prefix
-        Wizard addPre = null;
-        try {
-            addPre = (Wizard) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-
-        }
+        Wizard addPre = renamerWizardList.get(0);
         if(addPre.isChecked()){
             name = addPrefix(name, addPre.getParams().get(0), false);
         }
 
 
         //Add Suffix
-        Wizard addSuff = null;
-        try {
-            addSuff = (Wizard) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard addSuff = renamerWizardList.get(1);
         if(addSuff.isChecked()) {
             name = addSuffix(name, addSuff.getParams().get(0), false);
         }
 
 
         // Prefix Numbering
-        Wizard preNum = null;
-        try {
-            preNum = (Wizard) ois.readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard preNum = renamerWizardList.get(2);
         if(preNum.isChecked()){
-            String startFrom = preNum.getParams().get(0);
-            String numBy = preNum.getParams().get(1);
+            String fileName = preNum.getParams().get(0);
+            String startFrom = preNum.getParams().get(1);
+            String numBy = preNum.getParams().get(2);
             if(preStartFrom==null)
                 preStartFrom = Long.parseLong(startFrom);
 
             if(numBy.equals("Numeric")){
-                name = prefixNumberingInNumerics(name);
+                name = prefixNumberingInNumerics(name, fileName);
             }
             else if(numBy.equals("Alpha")){
-                name = prefixNumberinginAlpha(name);
+                name = prefixNumberinginAlpha(name, fileName);
             }
             else if(numBy.equals("Roman")){
-                name = prefixNumberingInRoman(name);
+                name = prefixNumberingInRoman(name, fileName);
             }
         }
 
 
         //Suffix Numbering
-        Wizard sufNum = null;
-        try {
-            sufNum = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard sufNum = renamerWizardList.get(3);
         if(sufNum.isChecked()){
-            String startFrom = sufNum.getParams().get(0);
-            String numBy = sufNum.getParams().get(1);
+            String fileName = sufNum.getParams().get(0);
+            String startFrom = sufNum.getParams().get(1);
+            String numBy = sufNum.getParams().get(2);
             if(sufStartFrom==null)
                 sufStartFrom = Long.parseLong(startFrom);
 
             if(numBy.equals("Numeric")){
-                name = suffixNumberingInNumerics(name);
+                name = suffixNumberingInNumerics(name, fileName);
             }
             else if(numBy.equals("Alpha")){
-                name = suffixNumberinginAlpha(name);
+                name = suffixNumberinginAlpha(name, fileName);
             }
             else if(numBy.equals("Roman")){
-                name = suffixNumberingInRoman(name);
+                name = suffixNumberingInRoman(name, fileName);
             }
         }
 
 
         //Replace Stirng
-        Wizard replace = null;
-        try {
-            replace = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard replace = renamerWizardList.get(4);
         if(replace.isChecked()){
             String replaceString = replace.getParams().get(0);
             String with = replace.getParams().get(1);
@@ -338,63 +361,28 @@ public class Renamer {
 
         }
 
-
         //All Upper Case
-        Wizard auc = null;
-        try {
-            auc = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard auc = renamerWizardList.get(5);
         if(auc.isChecked()){
             name = allCapitalLetters(name);
         }
 
 
         //All Lower Case
-        Wizard alc = null;
-        try {
-            alc = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard alc = renamerWizardList.get(6);
         if(preNum.isChecked()){
             name = allSmallLetters(name);
         }
 
 
         //First Letter Capital
-        Wizard flc = null;
-        try {
-            flc = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard flc = renamerWizardList.get(7);
         if(flc.isChecked()){
             name = firstLetterCapital(name);
         }
 
-
-
         //Remove
-        Wizard remove = null;
-        try {
-            remove = (Wizard) ois.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
+        Wizard remove = renamerWizardList.get(8);
         if(remove.isChecked()){
             String between = remove.getParams().get(0);
             String and = remove.getParams().get(1);

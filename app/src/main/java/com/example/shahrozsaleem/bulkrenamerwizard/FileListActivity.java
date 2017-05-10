@@ -1,6 +1,5 @@
 package com.example.shahrozsaleem.bulkrenamerwizard;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
 import android.support.v4.app.NavUtils;
@@ -23,6 +22,8 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -88,6 +89,7 @@ public class FileListActivity extends AppCompatActivity {
                 menuOption  = true;
                 invalidateOptionsMenu();
                 fileAdapter = new CheckBoxListArrayAdapter(FileListActivity.this, files, i);
+                actionBar.setDisplayHomeAsUpEnabled(false);
                 fileList.setAdapter(fileAdapter);
                 fileList.setSelection(i);
 
@@ -110,6 +112,9 @@ public class FileListActivity extends AppCompatActivity {
             else
                 filesList.add(f);
         }
+        FileComparator fc = new FileComparator();
+        Collections.sort(filesList, fc);
+        Collections.sort(foldersList, fc);
         foldersList.addAll(filesList);
         File[] f = new File[foldersList.size()];
         Iterator<File> itr = foldersList.iterator();
@@ -222,4 +227,15 @@ public class FileListActivity extends AppCompatActivity {
     }
 
 
+}
+
+
+class FileComparator implements Comparator<File>{
+
+    @Override
+    public int compare(File f1, File f2) {
+        String f1N = f1.getName().toLowerCase();
+        String f2N = f2.getName().toLowerCase();
+        return f1N.compareTo(f2N);
+    }
 }

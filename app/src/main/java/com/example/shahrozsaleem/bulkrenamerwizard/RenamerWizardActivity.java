@@ -37,12 +37,14 @@ public class RenamerWizardActivity extends AppCompatActivity {
     private CheckBox addSuffixCB;
     private EditText suffixET;
     private CheckBox prefixNumCB;
+    private EditText fileNamePreNumET;
     private  EditText startFromET;
     private RadioGroup prefixNumRG;
     private RadioButton preNumericRB;
     private RadioButton preAlphaRB;
     private RadioButton preRomanRB;
     private CheckBox sufNumCB;
+    private EditText fileNameSufNumET;
     private EditText sufStartFromET;
     private RadioGroup suffixNumRG;
     private RadioButton sufNumericRB;
@@ -73,12 +75,14 @@ public class RenamerWizardActivity extends AppCompatActivity {
         addSuffixCB = (CheckBox) findViewById(R.id.suffixCB);
         suffixET = (EditText) findViewById(R.id.suffixET);
         prefixNumCB = (CheckBox) findViewById(R.id.preNumCB);
+        fileNamePreNumET = (EditText) findViewById(R.id.fileNamePreNumET);
         startFromET = (EditText) findViewById(R.id.startFromET);
         prefixNumRG = (RadioGroup) findViewById(R.id.preNumRG);
         preNumericRB = (RadioButton) findViewById(R.id.preNumRB);
         preAlphaRB = (RadioButton) findViewById(R.id.preAlphaRB);
         preRomanRB = (RadioButton) findViewById(R.id.preRomanRB);
         sufNumCB = (CheckBox) findViewById(R.id.sufNumCB);
+        fileNameSufNumET = (EditText) findViewById(R.id.fileNameSufNumET);
         sufStartFromET = (EditText) findViewById(R.id.suffixStartFromET);
         suffixNumRG = (RadioGroup) findViewById(R.id.sufNumRG);
         sufNumericRB = (RadioButton) findViewById(R.id.sufNumRB);
@@ -208,7 +212,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
         if(addPrefixCB.isChecked()){
             addPre.setChecked(true);
             List<String> params = new ArrayList<String>();
-            params.add(prefixET.getText()+"");
+            params.add(prefixET.getText().toString());
             addPre.setParams(params);
         }
         oos.writeObject(addPre);
@@ -217,7 +221,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
         if(addSuffixCB.isChecked()){
             addSuf.setChecked(true);
             List<String> params = new ArrayList<String>();
-            params.add(suffixET.getText()+"");
+            params.add(suffixET.getText().toString());
             addPre.setParams(params);
         }
         oos.writeObject(addSuf);
@@ -226,7 +230,8 @@ public class RenamerWizardActivity extends AppCompatActivity {
         if(prefixNumCB.isChecked()){
             preNum.setChecked(true);
             List<String> params = new ArrayList<String>();
-            params.add(startFromET.getText()+"");
+            params.add(fileNamePreNumET.getText().toString());
+            params.add(startFromET.getText().toString());
             long checkedId = prefixNumRG.getCheckedRadioButtonId();
             if(checkedId==preNumericRB.getId()){
                 params.add("Numeric");
@@ -246,7 +251,8 @@ public class RenamerWizardActivity extends AppCompatActivity {
         if(sufNumCB.isChecked()){
             sufNum.setChecked(true);
             List<String> params = new ArrayList<String>();
-            params.add(sufStartFromET.getText()+"");
+            params.add(fileNameSufNumET.getText().toString());
+            params.add(sufStartFromET.getText().toString());
             long checkedId = suffixNumRG.getCheckedRadioButtonId();
             if(checkedId==sufNumericRB.getId()){
                 params.add("Numeric");
@@ -297,8 +303,8 @@ public class RenamerWizardActivity extends AppCompatActivity {
         if(removeCB.isChecked()){
             remove.setChecked(true);
             List<String> params = new ArrayList<String>();
-            params.add(String.valueOf(betweenET.getText()));
-            params.add(String.valueOf(andET.getText()));
+            params.add(betweenET.getText().toString());
+            params.add(andET.getText().toString());
         }
         oos.writeObject(remove);
 

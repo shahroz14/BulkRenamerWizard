@@ -25,6 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class RenamerWizardActivity extends AppCompatActivity {
@@ -56,6 +57,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
     private CheckBox removeCB;
     private EditText betweenET;
     private EditText andET;
+
 
 
 
@@ -91,10 +93,6 @@ public class RenamerWizardActivity extends AppCompatActivity {
         removeCB = (CheckBox) findViewById(R.id.removeCB);
         betweenET = (EditText) findViewById(R.id.betweenET);
         andET = (EditText) findViewById(R.id.andET);
-
-
-
-
 
 
     }
@@ -158,7 +156,6 @@ public class RenamerWizardActivity extends AppCompatActivity {
             }
 
             Intent intent = new Intent(RenamerWizardActivity.this, FileListActivity.class);
-            intent.putExtra("newFiles", Environment.getExternalStorageDirectory().getPath());
             intent.putExtra("WizardFilePath", wizardTempFile.getPath());
             startActivity(intent);
 

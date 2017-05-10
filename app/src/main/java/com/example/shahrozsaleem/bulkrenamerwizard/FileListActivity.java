@@ -3,6 +3,8 @@ package com.example.shahrozsaleem.bulkrenamerwizard;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
+import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,76 +22,62 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 public class FileListActivity extends AppCompatActivity {
 
     ListView fileList;
-    static File root = Environment.getExternalStorageDirectory();
     Intent in;
-    File[] files;
 
-    StringBuilder currFolder = new StringBuilder(root.getPath());
-    boolean menuOption = false;
+    static File root = Environment.getExternalStorageDirectory();
+    File parent = root;
+    File[] files;
     File wizardFile;
+
     CheckBoxListArrayAdapter fileAdapter;
+    DefaultListArrayAdapter defaultFileAdapter;
+    ActionBar actionBar;
+
+    boolean menuOption = false;
+    int depth = 0;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        //requestWindowFeature(Window.FEATURE_NO_TITLE); //hide toolbar
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_file_list);
-
-
         in = getIntent();
-        String str = in.getStringExtra("newFiles");
-        final String wizardFilePath = in.getStringExtra("WizardFilePath");
-        final String currentFolder = in.getStringExtra("CurrentFolder");
 
+        actionBar = getSupportActionBar();
+        actionBar.setTitle("Internal Storage");
+
+        final String wizardFilePath = in.getStringExtra("WizardFilePath");
 
         if(wizardFilePath!=null)
             wizardFile = new File(in.getStringExtra("WizardFilePath"));
 
-        //Toast.makeText(this, wizardFilePath+"", Toast.LENGTH_LONG).show();
-
-
-        if(str!=null)
-            root = new File(str);
-
-
-
-
         files = separateFilesAndFolders(root.listFiles());
-        if( files.length > 0) {
-
-            Log.d("debug", files.length + "------> " + files[0]);
-            DefaultListArrayAdapter fileAdapter = new DefaultListArrayAdapter(this, files);
-            fileList = (ListView) findViewById(R.id.fileList);
-            fileList.setAdapter(fileAdapter);
-
-        }
-
+        defaultFileAdapter = new DefaultListArrayAdapter(this, files);
+        fileList = (ListView) findViewById(R.id.fileList);
+        fileList.setAdapter(defaultFileAdapter);
 
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                depth++;
+                parent = files[i];
+                actionBar.setTitle(parent.getName());
+                actionBar.setDisplayHomeAsUpEnabled(true);
+                files = separateFilesAndFolders(files[i].listFiles());
+                defaultFileAdapter.updateAdapter(files);
 
-                Intent intent = new Intent(FileListActivity.this, FileListActivity.class);
-                if(files[i].listFiles().length==0){
-                    intent = new Intent(FileListActivity.this, EmptyFolderActivity.class);
-                }
-
-                intent.putExtra("newFiles", files[i].toString());
-                intent.putExtra("WizardFilePath", wizardFilePath);
-                startActivity(intent);
-                Log.d("Debasd", "Aftre start");
-                //Toast.makeText(FileListActivity.this, "you clicked "+files[i].getName(), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         fileList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -99,7 +87,6 @@ public class FileListActivity extends AppCompatActivity {
 
                 menuOption  = true;
                 invalidateOptionsMenu();
-
                 fileAdapter = new CheckBoxListArrayAdapter(FileListActivity.this, files, i);
                 fileList.setAdapter(fileAdapter);
                 fileList.setSelection(i);
@@ -151,13 +138,28 @@ public class FileListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getItemId()== android.R.id.home){
+            depth--;
+            if(depth==0) {
+                actionBar.setDisplayHomeAsUpEnabled(false);
+                actionBar.setTitle("Internal Storage");
+                parent = root;
+            }
+            else {
+                parent = parent.getParentFile();
+                actionBar.setTitle(parent.getName());
+            }
+            files = separateFilesAndFolders(parent.listFiles());
+            defaultFileAdapter.updateAdapter(files);
+            return true;
+        }
+
         if(item.toString().equals("Cancel")){
             menuOption = false;
             invalidateOptionsMenu();
-            DefaultListArrayAdapter fileAdapter = new DefaultListArrayAdapter(this, files);
-            fileList = (ListView) findViewById(R.id.fileList);
-            fileList.setAdapter(fileAdapter);
+            fileList.setAdapter(defaultFileAdapter);
         }
+
         if(item.toString().equals("Rename")){
 
             ArrayList<File> files = getSelectedFiles();

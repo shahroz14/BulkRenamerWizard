@@ -120,17 +120,27 @@ public class RenamerWizardActivity extends AppCompatActivity {
             final AlertDialog alertDialog = mBuilder.create();
             alertDialog.show();
 
-            final EditText fileNameET = (EditText) dialog.findViewById(R.id.fileNameET);
 
+            if(isEmptyField())
+                return true;
 
             Button saveBtn = (Button) dialog.findViewById(R.id.saveBtn);
             saveBtn.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View view) {
                     try {
-                        generateFile(new File(wizardRoot, String.valueOf(fileNameET.getText()+".brw")));
-                        Toast.makeText(dialog.getContext(), "File Saved", Toast.LENGTH_SHORT).show();
-                        alertDialog.dismiss();
+                        final EditText fileNameET = (EditText) dialog.findViewById(R.id.fileNameET);
+                        if(fileNameET.getText().toString().equals("temp")){
+                            Toast.makeText(dialog.getContext(), "This name can't be taken.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(new File(wizardRoot, fileNameET.getText().toString()+".brw").exists()){
+                            Toast.makeText(dialog.getContext(), "File name already exist.", Toast.LENGTH_SHORT).show();
+                        }
+                        else {
+                            generateFile(new File(wizardRoot, String.valueOf(fileNameET.getText() + ".brw")));
+                            Toast.makeText(dialog.getContext(), "File Saved", Toast.LENGTH_SHORT).show();
+                            alertDialog.dismiss();
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -151,7 +161,9 @@ public class RenamerWizardActivity extends AppCompatActivity {
 
             File wizardTempFile = new File(wizardRoot, "temp.brw");
             try {
+                wizardTempFile.createNewFile();
                 generateFile(wizardTempFile);
+                Log.d("debug", wizardTempFile.toString());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -205,7 +217,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
 
     void generateFile(File file) throws IOException {
 
-        FileOutputStream fos = new FileOutputStream(file);
+        FileOutputStream fos = new FileOutputStream(file, false);
         ObjectOutputStream oos = new ObjectOutputStream(fos);
 
         Wizard addPre = new Wizard();
@@ -222,7 +234,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
             addSuf.setChecked(true);
             List<String> params = new ArrayList<String>();
             params.add(suffixET.getText().toString());
-            addPre.setParams(params);
+            addSuf.setParams(params);
         }
         oos.writeObject(addSuf);
 
@@ -305,13 +317,12 @@ public class RenamerWizardActivity extends AppCompatActivity {
             List<String> params = new ArrayList<String>();
             params.add(betweenET.getText().toString());
             params.add(andET.getText().toString());
+            remove.setParams(params);
         }
         oos.writeObject(remove);
 
         oos.flush();
         oos.close();
-
-
     }
 
 }

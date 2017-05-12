@@ -1,41 +1,45 @@
 package com.example.shahrozsaleem.bulkrenamerwizard;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Environment;
-import android.support.v4.app.NavUtils;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
-import java.util.List;
 
 public class FileListActivity extends AppCompatActivity {
+
+    final static String ENV_SECONDARY_STORAGE = "SECONDARY_STORAGE";
+    public final static int PERMISSION_REQUEST_READ_WRITE_EXTERNAL_STORAGE=700; //App defined Int Constant to unquely identify permission
+
 
     ListView fileList;
     Intent in;
 
-    static File root = Environment.getExternalStorageDirectory();
-    File parent = root;
+    static File internalStorage = Environment.getExternalStorageDirectory();
+    File parent = internalStorage;
     File[] files;
     File wizardFile;
+
+    int writePermission;
+    int readPermission;
 
     CheckBoxListArrayAdapter fileAdapter;
     DefaultListArrayAdapter defaultFileAdapter;
@@ -52,6 +56,9 @@ public class FileListActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_file_list);
+        writePermission = ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        files = new File[0];
         in = getIntent();
 
         actionBar = getSupportActionBar();
@@ -62,7 +69,23 @@ public class FileListActivity extends AppCompatActivity {
         if(wizardFilePath!=null)
             wizardFile = new File(in.getStringExtra("WizardFilePath"));
 
-        files = separateFilesAndFolders(root.listFiles());
+        if(! (writePermission == PackageManager.PERMISSION_GRANTED && readPermission == PackageManager.PERMISSION_GRANTED)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(FileListActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) ||
+                    ActivityCompat.shouldShowRequestPermissionRationale(FileListActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                showPermissionRequiredDialog("Give application permissions to read and write to storage, needed browse and rename files", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(FileListActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_WRITE_EXTERNAL_STORAGE );
+                    }
+                 });
+            }
+            else {
+                ActivityCompat.requestPermissions(FileListActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_WRITE_EXTERNAL_STORAGE );
+            }
+
+        } else {
+            files = separateFilesAndFolders(parent.listFiles());
+        }
         defaultFileAdapter = new DefaultListArrayAdapter(this, files);
         fileList = (ListView) findViewById(R.id.fileList);
         fileList.setAdapter(defaultFileAdapter);
@@ -74,7 +97,7 @@ public class FileListActivity extends AppCompatActivity {
                 parent = files[i];
                 actionBar.setTitle(parent.getName());
                 actionBar.setDisplayHomeAsUpEnabled(true);
-                files = separateFilesAndFolders(files[i].listFiles());
+                files = separateFilesAndFolders(parent.listFiles());
                 defaultFileAdapter.updateAdapter(files);
 
             }
@@ -126,7 +149,10 @@ public class FileListActivity extends AppCompatActivity {
 
     }
 
-
+    @Override
+    public void onBackPressed(){
+        finish();
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
@@ -148,7 +174,7 @@ public class FileListActivity extends AppCompatActivity {
             if(depth==0) {
                 actionBar.setDisplayHomeAsUpEnabled(false);
                 actionBar.setTitle("Internal Storage");
-                parent = root;
+                parent = internalStorage;
             }
             else {
                 parent = parent.getParentFile();
@@ -162,6 +188,7 @@ public class FileListActivity extends AppCompatActivity {
         if(item.toString().equals("Cancel")){
             menuOption = false;
             invalidateOptionsMenu();
+            actionBar.setDisplayHomeAsUpEnabled(true);
             fileList.setAdapter(defaultFileAdapter);
         }
 
@@ -169,11 +196,9 @@ public class FileListActivity extends AppCompatActivity {
 
             ArrayList<File> files = getSelectedFiles();
             ArrayList<File> folders = getSelectedFolders();
-            Renamer renamer = new Renamer(root, folders, files, wizardFile, getApplicationContext());
+            Renamer renamer = new Renamer(internalStorage, folders, files, wizardFile, getApplicationContext());
             renamer.rename();
-            Intent in = getIntent();
             finish();
-            startActivity(in);
             Toast.makeText(this, "Files Renamed", Toast.LENGTH_LONG).show();
 
         }
@@ -209,22 +234,41 @@ public class FileListActivity extends AppCompatActivity {
         return folderArrayList;
     }
 
+
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int listPosition = info.position;
-        if(item.getTitle()=="Rename") {
-            File f = files[listPosition];
-            if(!f.isDirectory())
-                Toast.makeText(this, f.getPath()+"not a directory", Toast.LENGTH_SHORT).show();
-            else{
-                Renamer r = new Renamer(f.getPath());
-                r.rename();
-                Toast.makeText(this, "Renamed Successfully", Toast.LENGTH_SHORT).show();
-            }
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_READ_WRITE_EXTERNAL_STORAGE:
+                if(grantResults.length > 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    files = separateFilesAndFolders(parent.listFiles());
+                    defaultFileAdapter.updateAdapter(files);
+                }
+                else {
+                    finish();
+                    Toast.makeText(FileListActivity.this, "Permission denied By user, application cannot work without permissions", Toast.LENGTH_LONG).show();
+                }
+                break;
         }
-        return super.onContextItemSelected(item);
     }
+
+    void showPermissionRequiredDialog(String message, DialogInterface.OnClickListener positiveListener) {
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setTitle("Permissions Required")
+                .setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Grant", positiveListener)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        finish();
+                        Toast.makeText(FileListActivity.this, "Permission denied By user, Application needs Permissions to function", Toast.LENGTH_LONG).show();
+                    }
+                })
+                .show();
+    }
+
+
 
 
 }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     >
 
 
@@ -17,47 +18,57 @@
         android:layout_marginLeft="2dp"
         />
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/fileNameTV"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_marginLeft="10dp">
+
+            <TextView
+                android:id="@+id/fileNameTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+
+                android:text="File Name"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="2dp"
-            android:text="TextView"
-            android:textSize="14sp"
+            android:layout_weight="1"
+            android:layout_marginLeft="10dp"
+            android:orientation="horizontal">
 
-            />
+            <TextView
+                android:id="@+id/fileSizeTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:layout_weight="1"
+                android:text="File Size"
+                android:textSize="10sp" />
 
+            <TextView
+                android:id="@+id/dateModifiedTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="bottom"
+                android:layout_marginEnd="15dp"
+                android:layout_weight="1"
+                android:text="Last Modified:"
+                android:textSize="12sp" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/fileSizeTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:text="File Size"
-            android:textSize="10sp"
-            android:layout_alignStart="@+id/fileNameTV"
-            android:layout_alignBottom="@+id/dateModifiedTV" />
-
-
-        <TextView
-            android:id="@+id/dateModifiedTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Last Modified:"
-            android:textSize="12sp"
-            android:layout_marginEnd="15dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

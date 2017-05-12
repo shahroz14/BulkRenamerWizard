@@ -50,6 +50,7 @@ public class Renamer {
 		this.files = files;
 		this.subFolders = folders;
         this.wizardFile = wizardFile;
+        renamerWizardList = new ArrayList<>();
         readWizard();
         setPreStartFrom();
         setSufStartFrom();

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:theme="@style/AppTheme"
+    android:background="@color/cardview_light_background"
     tools:context="com.example.shahrozsaleem.bulkrenamerwizard.FileListActivity">
 
    <!-- <include layout="@layout/toolbar"/>-->

@@ -26,26 +26,28 @@
         android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FileListActivity">
-
-        </activity>
-
+        <activity android:name=".FileListActivity" />
         <activity android:name=".EmptyFolderActivity" />
-
-        <activity android:name=".RenamerWizardActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
+        <activity android:name=".RenamerWizardActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".WizardsList">
+
+            <!--
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            -->
+        </activity>
+        <activity android:name=".ChooseUtilityActivity"></activity>
+        <activity android:name=".DuplicateFileRemoverActivity">
         </activity>
     </application>
 

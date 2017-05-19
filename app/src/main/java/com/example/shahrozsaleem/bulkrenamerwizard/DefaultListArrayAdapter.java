@@ -47,7 +47,6 @@ public class DefaultListArrayAdapter extends ArrayAdapter<File> {
         View rowView = inflater.inflate(R.layout.activity_my_file_list, null, true);
         ImageView img = (ImageView) rowView.findViewById(R.id.imageView);
         TextView tv = (TextView) rowView.findViewById(R.id.fileNameTV);
-        Log.d("StorageDir", position+"");
 
         if(files[position].isDirectory())
             img.setImageResource(R.drawable.folder);
@@ -55,6 +54,7 @@ public class DefaultListArrayAdapter extends ArrayAdapter<File> {
             img.setImageResource(R.drawable.file);
 
         tv.setText(files[position].getName());
+        tv.setSelected(true);
         TextView modView = (TextView) rowView.findViewById(R.id.dateModifiedTV);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
         modView.setText("Last Modified: "+sdf.format(files[position].lastModified()));

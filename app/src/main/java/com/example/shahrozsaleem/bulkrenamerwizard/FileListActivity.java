@@ -1,6 +1,7 @@
 package com.example.shahrozsaleem.bulkrenamerwizard;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,8 +18,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -46,6 +49,7 @@ public class FileListActivity extends AppCompatActivity {
     ActionBar actionBar;
 
     boolean menuOption = false;
+    boolean duplicateMenu = false;
     int depth = 0;
 
 
@@ -60,6 +64,9 @@ public class FileListActivity extends AppCompatActivity {
         readPermission = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         files = new File[0];
         in = getIntent();
+
+        if(in.getIntExtra("duplicateMenu",0)==1)
+            duplicateMenu = true;
 
         actionBar = getSupportActionBar();
         actionBar.setTitle("Internal Storage");
@@ -93,12 +100,17 @@ public class FileListActivity extends AppCompatActivity {
         fileList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                depth++;
-                parent = files[i];
-                actionBar.setTitle(parent.getName());
-                actionBar.setDisplayHomeAsUpEnabled(true);
-                files = separateFilesAndFolders(parent.listFiles());
-                defaultFileAdapter.updateAdapter(files);
+                if(files[i].isDirectory()){
+                    depth++;
+                    parent = files[i];
+                    actionBar.setTitle(parent.getName());
+                    actionBar.setDisplayHomeAsUpEnabled(true);
+                    files = separateFilesAndFolders(parent.listFiles());
+                    defaultFileAdapter.updateAdapter(files);
+                }
+                else {
+                    Toast.makeText(FileListActivity.this, "Can't open file", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -159,7 +171,11 @@ public class FileListActivity extends AppCompatActivity {
         menu.clear();
         Log.d("Check", "Menu");
         if(menuOption) {
-            menu.add("Rename").setIcon(R.drawable.rename).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            if(duplicateMenu)
+                menu.add("Find Duplicates").setIcon(R.drawable.dup_menu).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+            else
+                menu.add("Rename").setIcon(R.drawable.rename).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
             menu.add("Cancel").setIcon(R.drawable.cross).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
         }
         else
@@ -200,6 +216,29 @@ public class FileListActivity extends AppCompatActivity {
             renamer.rename();
             finish();
             Toast.makeText(this, "Files Renamed", Toast.LENGTH_LONG).show();
+
+        }
+
+        if(item.toString().equals("Find Duplicates")) {
+
+
+            ArrayList<File> files = getSelectedFiles();
+            ArrayList<File> folders = getSelectedFolders();
+            DuplicateFileRemover dfr = new DuplicateFileRemover(folders, files);
+            try {
+                dfr.findDuplicates();
+
+                Intent intent = new Intent(FileListActivity.this, DuplicateFileRemoverActivity.class);
+                intent.putExtra("duplicateFiles", dfr.duplicateFiles);
+                intent.putExtra("savedSpace", dfr.savedSpace);
+                intent.putExtra("duplicatesCount", dfr.dupCount);
+
+                startActivity(intent);
+                finish();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
 
         }
 

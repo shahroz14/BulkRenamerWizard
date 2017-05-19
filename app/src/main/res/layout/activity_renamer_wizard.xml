@@ -5,7 +5,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="fill_parent"
+    android:background="@color/colorBack"
+    android:paddingBottom="5dp">
 
 
 
@@ -21,8 +23,15 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#0f8d99"
-            android:orientation="vertical">
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            >
 
 
 
@@ -34,7 +43,7 @@
 
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="10dp"
+
                 >
 
                 <CheckBox
@@ -45,7 +54,7 @@
                     android:layout_weight="1"
 
                     android:text="Add Prefix"
-                    android:textColor="#108ddb" />
+                    android:textColor="@color/colorPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -61,7 +70,7 @@
                         android:layout_weight="1"
                         android:text="Prefix"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/prefixET"
@@ -96,7 +105,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Add Suffix"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -112,7 +121,7 @@
                         android:layout_weight="1"
                         android:text="Suffix"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/suffixET"
@@ -145,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Prefix Numbering"
-                    android:textColor="@android:color/holo_blue_dark"
+                    android:textColor="@color/colorPrimary"
                     android:textColorLink="@color/colorAccent" />
 
                 <LinearLayout
@@ -161,7 +170,7 @@
                         android:layout_weight="1"
                         android:textAlignment="center"
                         android:text="File Name"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/fileNamePreNumET"
@@ -193,7 +202,7 @@
                         android:layout_weight="1"
                         android:text="Start From"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/startFromET"
@@ -225,7 +234,7 @@
                         android:layout_weight="1"
                         android:text="Numeric"
                         android:checked="true"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <RadioButton
                         android:id="@+id/preAlphaRB"
@@ -233,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Alphabetic"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <RadioButton
                         android:id="@+id/preRomanRB"
@@ -241,7 +250,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Roman"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -262,7 +271,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Suffix Numbering"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -277,7 +286,7 @@
                         android:layout_weight="1"
                         android:text="File Name"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/fileNameSufNumET"
@@ -309,7 +318,7 @@
                         android:layout_weight="1"
                         android:text="Start From"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/suffixStartFromET"
@@ -341,7 +350,7 @@
                         android:layout_weight="1"
                         android:text="Numeric"
                         android:checked="true"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <RadioButton
                         android:id="@+id/sufAlphaRB"
@@ -349,7 +358,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Alphabetic"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <RadioButton
                         android:id="@+id/sufRomanRB"
@@ -357,7 +366,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Roman"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
                 </RadioGroup>
             </LinearLayout>
 
@@ -377,7 +386,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Replace String"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -393,7 +402,7 @@
                         android:layout_weight="1"
                         android:textAlignment="center"
                         android:text="Replace"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/replaceStringET"
@@ -425,7 +434,7 @@
                         android:layout_weight="1"
                         android:text="With"
                         android:textAlignment="center"
-                        android:textColor="@android:color/holo_blue_dark" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/replaceWithET"
@@ -462,7 +471,7 @@
 
                     android:layout_weight="1"
                     android:text="All Uppercase"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -481,7 +490,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="All Lowercase"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -500,7 +509,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="First Letter Capital"
-                    android:textColor="@android:color/holo_blue_dark" />
+                    android:textColor="@color/colorPrimary" />
             </LinearLayout>
 
             <LinearLayout
@@ -511,7 +520,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 >
 
                 <CheckBox
@@ -519,7 +528,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Remove"
-                    android:textColor="#0f8ddb" />
+                    android:textColor="@color/colorPrimary" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -532,7 +541,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textColor="#0f8ddb"
+                        android:textColor="@color/colorPrimary"
                         android:textAlignment="center"
                         android:text="Between" />
 
@@ -565,7 +574,7 @@
                         android:layout_weight="1"
                         android:text="And"
                         android:textAlignment="center"
-                        android:textColor="#0f8ddb" />
+                        android:textColor="@color/colorPrimary" />
 
                     <EditText
                         android:id="@+id/andET"

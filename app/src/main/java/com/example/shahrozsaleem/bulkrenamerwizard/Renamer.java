@@ -117,7 +117,6 @@ public class Renamer {
 		for (File file : files) {
                 String ext = getExtension(file.getName());
 				String newName = getModifiedName(removeExtensionFromFile(file.getName()));
-				Log.d("Debug", file.getParent()+" "+newName);
 				file.renameTo(new File(file.getParent(), newName+"."+ext));
 				//Log.d("DebugFilePath", mainFolder.getPath());
 		}
@@ -127,7 +126,7 @@ public class Renamer {
 		}
 	}
 
-	String removeExtensionFromFile(String fileName){
+	static String removeExtensionFromFile(String fileName){
 
         int lastIndex = fileName.lastIndexOf('.');
         if(lastIndex>=0)
@@ -371,7 +370,7 @@ public class Renamer {
 
         //All Lower Case
         Wizard alc = renamerWizardList.get(6);
-        if(preNum.isChecked()){
+        if(alc.isChecked()){
             name = allSmallLetters(name);
         }
 
@@ -406,6 +405,7 @@ public class Renamer {
             name += string;
         return name;
 	}
+    
 	
 	private static String startWithLetter(String name){
 		Pattern p = Pattern.compile("[a-zA-Z].*");
@@ -417,17 +417,13 @@ public class Renamer {
 	}
 	
 	static String allCapitalLetters( String name){
-		StringBuilder mName = new StringBuilder("");
-		for( int i=0; i<name.length(); i++)
-			mName.append( Character.toUpperCase(name.charAt(i)));
-		return mName.toString();
+		return name.toUpperCase();
 	}
 	
 	static String allSmallLetters( String name){
-		StringBuilder mName = new StringBuilder("");
-		for( int i=0; i<name.length(); i++)
-			mName.append( Character.toLowerCase(name.charAt(i)));
-		return mName.toString();
+        name = name.toLowerCase();
+        Log.d("Debug", name);
+		return name;
 	}
 	
 	private static String replaceStringWith(String name, String replace, String with){

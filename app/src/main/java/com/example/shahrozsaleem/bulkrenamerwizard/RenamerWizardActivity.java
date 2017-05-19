@@ -67,7 +67,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        makeDirectories();
+        checkingDirectories();
         //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_renamer_wizard);
         addPrefixCB = (CheckBox) findViewById(R.id.prefixCB);
@@ -99,8 +99,15 @@ public class RenamerWizardActivity extends AppCompatActivity {
         andET = (EditText) findViewById(R.id.andET);
 
 
+
     }
 
+    void checkingDirectories(){
+        File appRoot = new File(Environment.getExternalStorageDirectory(), String.valueOf("Bulk Rename Wizard"));
+        this.appRoot = appRoot;
+        File wizard = new File(appRoot, "wizards");
+        wizardRoot = wizard;
+    }
 
 
     @Override
@@ -132,6 +139,9 @@ public class RenamerWizardActivity extends AppCompatActivity {
                         final EditText fileNameET = (EditText) dialog.findViewById(R.id.fileNameET);
                         if(fileNameET.getText().toString().equals("temp")){
                             Toast.makeText(dialog.getContext(), "This name can't be taken.", Toast.LENGTH_SHORT).show();
+                        }
+                        else if(fileNameET.getText().toString().equals("")){
+                            Toast.makeText(RenamerWizardActivity.this, "File name can't be empty", Toast.LENGTH_SHORT).show();
                         }
                         else if(new File(wizardRoot, fileNameET.getText().toString()+".brw").exists()){
                             Toast.makeText(dialog.getContext(), "File name already exist.", Toast.LENGTH_SHORT).show();
@@ -180,6 +190,11 @@ public class RenamerWizardActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     boolean isEmptyField(){
         if(prefixNumCB.isChecked() && TextUtils.isEmpty(startFromET.getText().toString())) {
             startFromET.setError(getString(R.string.blankField));
@@ -205,15 +220,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
         return false;
     }
 
-    void makeDirectories(){
-        File appRoot = new File(Environment.getExternalStorageDirectory(), String.valueOf("Bulk Rename Wizard"));
-        appRoot.mkdirs();
-        this.appRoot = appRoot;
-        File wizard = new File(appRoot, "wizards");
-        wizard.mkdirs();
-        wizardRoot = wizard;
 
-    }
 
     void generateFile(File file) throws IOException {
 

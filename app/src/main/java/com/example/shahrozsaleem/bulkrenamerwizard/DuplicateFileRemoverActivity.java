@@ -16,7 +16,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 public class DuplicateFileRemoverActivity extends AppCompatActivity {
 
@@ -109,9 +112,22 @@ class DuplicateFileRemover {
     public void findDuplicates() throws IOException {
 
         List<File> dupFiles;
-
+        HashMap<Long, List<File>> map = new HashMap<>();
         for(int i=0; i<files.size()-1; i++) {
-            File file1 = files.get(i);
+            File f = files.get(i);
+            long len = f.length();
+            if (!map.containsKey(len)) {
+                List<File> filesOfSameSize = new ArrayList<>();
+                filesOfSameSize.add(f);
+                map.put(len, filesOfSameSize);
+            } else {
+                map.get(len).add(f);
+            }
+        }
+
+
+
+            /*File file1 = files.get(i);
             dupFiles = new ArrayList<File>();
             for(int j=i+1; j<files.size(); j++) {
                 File file2 = files.get(j);
@@ -124,8 +140,32 @@ class DuplicateFileRemover {
                 }
             }
             if(!dupFiles.isEmpty())
-                duplicateFiles.put(file1, dupFiles);
+                duplicateFiles.put(file1, dupFiles);*/
+
+        Iterator<Map.Entry<Long, List<File>>> itr = map.entrySet().iterator();
+        while (itr.hasNext()){
+            Map.Entry<Long, List<File>> entry = itr.next();
+            List<File> list = entry.getValue();
+
+            for(int i=0; i<list.size()-1; i++){
+                dupFiles = new ArrayList<File>();
+                File file1 = list.get(i);
+                for(int j=i+1; j<list.size(); j++) {
+                    File file2 = list.get(j);
+                    if(isDuplicate(file1, file2)) {
+                        dupCount++;
+                        dupFiles.add(file2);
+                        savedSpace += (file2.length());
+                        list.remove(j);
+                        j--;
+                    }
+                }
+                if(!dupFiles.isEmpty()){
+                    duplicateFiles.put(file1, dupFiles);
+                }
+            }
         }
+
     }
 
 

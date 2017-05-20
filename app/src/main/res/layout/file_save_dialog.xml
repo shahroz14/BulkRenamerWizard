@@ -11,9 +11,9 @@
         android:id="@+id/saveFileTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="Save File"
         android:textAlignment="center"
-        android:layout_marginTop="10dp"
 
         android:textColor="@color/colorPrimary"
         android:textSize="18sp" />
@@ -23,17 +23,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="30dp">
-
-        <TextView
-            android:id="@+id/fileNameTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:text="File Name"
-            android:layout_marginLeft="20dp"
-            android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/fileNameET"
@@ -64,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/round_button"
             android:text="Save"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="10dp"
@@ -77,7 +66,7 @@
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="20dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/round_button"
             android:text="Cancel"
             android:textColor="@color/cardview_light_background" />
     </LinearLayout>

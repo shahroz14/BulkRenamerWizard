@@ -20,7 +20,10 @@ public class ChooseUtilityActivity extends AppCompatActivity {
 
     }
 
-
+    public void goToOCR(View view){
+        Intent intent = new Intent(ChooseUtilityActivity.this, TextRecognitionActivity.class);
+        startActivity(intent);
+    }
 
     public void goToFileRenamer(View view) {
         Intent intent = new Intent(ChooseUtilityActivity.this, WizardsList.class);

@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/bottom_toolbar_button"
+        android:background="@drawable/round_button"
         android:text="Delete"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="2dp"
@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@drawable/bottom_toolbar_button"
+        android:background="@drawable/round_button"
         android:textColor="#ffffff"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -35,7 +35,7 @@
         android:layout_weight="1"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="4dp"
-        android:background="@drawable/bottom_toolbar_button"
+        android:background="@drawable/round_button"
         android:text="Rename"
         android:textColor="#ffffff" />
 </LinearLayout>

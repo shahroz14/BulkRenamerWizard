@@ -24,7 +24,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run(){
                 try {
-                    sleep(1000);
+                    sleep(2000);
                     Intent intent = new Intent(SplashActivity.this, ChooseUtilityActivity.class);
                     startActivity(intent);
                     finish();

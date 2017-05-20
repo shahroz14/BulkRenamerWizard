@@ -46,9 +46,9 @@
             </intent-filter>
             -->
         </activity>
-        <activity android:name=".ChooseUtilityActivity"></activity>
-        <activity android:name=".DuplicateFileRemoverActivity">
-        </activity>
+        <activity android:name=".ChooseUtilityActivity" />
+        <activity android:name=".DuplicateFileRemoverActivity"></activity>
+        <activity android:name=".TextRecognitionActivity"></activity>
     </application>
 
 </manifest>

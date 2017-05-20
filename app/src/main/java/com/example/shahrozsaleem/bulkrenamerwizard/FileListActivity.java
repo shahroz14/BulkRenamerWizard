@@ -142,9 +142,9 @@ public class FileListActivity extends AppCompatActivity {
         ArrayList<File> filesList = new ArrayList<File>();
         ArrayList<File> foldersList = new ArrayList<File>();
         for (File f: ff) {
-            if(f.isDirectory())
+            if(f.isDirectory() && !f.isHidden())
                 foldersList.add(f);
-            else
+            else if(!f.isHidden())
                 filesList.add(f);
         }
         FileComparator fc = new FileComparator();

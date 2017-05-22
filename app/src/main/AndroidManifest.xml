@@ -49,6 +49,9 @@
         <activity android:name=".ChooseUtilityActivity" />
         <activity android:name=".DuplicateFileRemoverActivity"></activity>
         <activity android:name=".TextRecognitionActivity"></activity>
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="ocr" />
     </application>
 
 </manifest>

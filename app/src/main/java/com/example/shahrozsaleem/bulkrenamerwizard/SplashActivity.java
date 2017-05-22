@@ -19,12 +19,11 @@ public class SplashActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN); //hide notificatoin bar
 
         setContentView(R.layout.activity_splash);
-        makeDirectories();
         Thread thread = new Thread(){
             @Override
             public void run(){
                 try {
-                    sleep(2000);
+                    sleep(1500);
                     Intent intent = new Intent(SplashActivity.this, ChooseUtilityActivity.class);
                     startActivity(intent);
                     finish();
@@ -38,11 +37,6 @@ public class SplashActivity extends Activity {
 
     }
 
-    void makeDirectories(){
-        File appRoot = new File(Environment.getExternalStorageDirectory(), String.valueOf("Bulk Rename Wizard"));
-        appRoot.mkdirs();
-        File wizard = new File(appRoot, "wizards");
-        wizard.mkdirs();
-    }
+
 
 }

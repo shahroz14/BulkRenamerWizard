@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,7 +26,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 public class FileListActivity extends AppCompatActivity {
 
@@ -35,6 +38,7 @@ public class FileListActivity extends AppCompatActivity {
 
     ListView fileList;
     Intent in;
+    ProgressDialog mProgress;
 
     static File internalStorage = Environment.getExternalStorageDirectory();
     File parent = internalStorage;
@@ -51,9 +55,6 @@ public class FileListActivity extends AppCompatActivity {
     boolean menuOption = false;
     boolean duplicateMenu = false;
     int depth = 0;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +90,6 @@ public class FileListActivity extends AppCompatActivity {
             else {
                 ActivityCompat.requestPermissions(FileListActivity.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_READ_WRITE_EXTERNAL_STORAGE );
             }
-
         } else {
             files = separateFilesAndFolders(parent.listFiles());
         }
@@ -221,24 +221,18 @@ public class FileListActivity extends AppCompatActivity {
 
         if(item.toString().equals("Find Duplicates")) {
 
+            mProgress = new ProgressDialog(FileListActivity.this);
+            mProgress.setCancelable(false);
+            mProgress.setTitle("Processing...");
+            mProgress.setMessage("Finding Duplicates, Please wait...");
+            mProgress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgress.show();
 
             ArrayList<File> files = getSelectedFiles();
             ArrayList<File> folders = getSelectedFolders();
-            DuplicateFileRemover dfr = new DuplicateFileRemover(folders, files);
-            try {
-                dfr.findDuplicates();
 
-                Intent intent = new Intent(FileListActivity.this, DuplicateFileRemoverActivity.class);
-                intent.putExtra("duplicateFiles", dfr.duplicateFiles);
-                intent.putExtra("savedSpace", dfr.savedSpace);
-                intent.putExtra("duplicatesCount", dfr.dupCount);
-
-                startActivity(intent);
-                finish();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
+            FindDuplicates findDuplicates = new FindDuplicates();
+            findDuplicates.execute(folders, files);
 
         }
 
@@ -254,7 +248,7 @@ public class FileListActivity extends AppCompatActivity {
 
         boolean[] marked = fileAdapter.getAllMarkedFiles();
         for(int i=0; i<marked.length; i++){
-            if(marked[i] && files[i].isFile()){
+            if(marked[i] && files[i].isFile() && !files[i].isHidden()){
                 fileArrayList.add(files[i]);
             }
         }
@@ -305,6 +299,35 @@ public class FileListActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+
+    class FindDuplicates extends AsyncTask<List<File>, String, Integer> {
+        DuplicateFileRemover dfr;
+        @Override
+        protected Integer doInBackground(List<File>... filesList) {
+            dfr = new DuplicateFileRemover(filesList[0], filesList[1]);
+            try {
+                dfr.findDuplicates();
+                publishProgress();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return 14;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            super.onProgressUpdate(values);
+            Intent intent = new Intent(FileListActivity.this, DuplicateFileRemoverActivity.class);
+            intent.putExtra("duplicateFiles", dfr.duplicateFiles);
+            intent.putExtra("savedSpace", dfr.savedSpace);
+            intent.putExtra("duplicatesCount", dfr.dupCount);
+            mProgress.cancel();
+            startActivity(intent);
+            finish();
+        }
     }
 
 

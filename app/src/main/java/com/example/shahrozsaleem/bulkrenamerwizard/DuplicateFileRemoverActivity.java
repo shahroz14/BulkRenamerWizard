@@ -46,7 +46,7 @@ public class DuplicateFileRemoverActivity extends AppCompatActivity {
         dupCountTV = (TextView) findViewById(R.id.dupFoundTV);
         savedSpaceTV = (TextView) findViewById(R.id.spaceSavedTV);
         dupCountTV.setText(dupCount+" Duplicates Found");
-        savedSpaceTV.setText(DefaultListArrayAdapter.getSize((long) savedSpace)+" saved");
+        savedSpaceTV.setText(DefaultListArrayAdapter.getSize((long) savedSpace)+" can be saved");
 
         Log.d("Debug", expandableListView.toString());
         ExpandableListViewAdapter exAdapter = new ExpandableListViewAdapter(this, duplicateFiles);
@@ -102,9 +102,9 @@ class DuplicateFileRemover {
     public void collectAllFromFolder(File folder){
         File[] contents = folder.listFiles();
         for (File file : contents) {
-            if(file.isDirectory())
+            if(file.isDirectory() && !file.isHidden())
                 folders.add(file);
-            if(file.isFile())
+            if(file.isFile() && !file.isHidden())
                 files.add(file);
         }
     }

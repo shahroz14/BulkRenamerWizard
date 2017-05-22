@@ -111,7 +111,10 @@ public class ExpandableListViewAdapter extends BaseExpandableListAdapter {
                 DuplicateFileRemoverActivity.fireChange(DuplicateFileRemoverActivity.dupCount-1, (long)(DuplicateFileRemoverActivity.savedSpace-toDelete.length()));
                 toDelete.delete();
                 duplicateFiles.get(groupHeader.get(group)).remove(child);
-
+                if(duplicateFiles.get(groupHeader.get(group)).size() == 0){
+                    duplicateFiles.remove(groupHeader.get(group));
+                    groupHeader.remove(group);
+                }
                 notifyDataSetChanged();
             }
         });

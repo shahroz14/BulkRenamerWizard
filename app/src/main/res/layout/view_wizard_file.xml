@@ -8,8 +8,8 @@
         android:id="@+id/wizardDescTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp"
+        android:padding="10dp"
         android:textAlignment="textStart"
-        android:textColor="@color/common_google_signin_btn_text_light_focused" />
+        android:textColor="@color/cardview_dark_background" />
 
 </ScrollView>

@@ -148,6 +148,7 @@ public class RenamerWizardActivity extends AppCompatActivity {
                         }
                         else {
                             generateFile(new File(wizardRoot, String.valueOf(fileNameET.getText() + ".brw")));
+                            Log.d("Debug", new File(wizardRoot, fileNameET.getText().toString()+".brw").exists()+"");
                             Toast.makeText(dialog.getContext(), "File Saved", Toast.LENGTH_SHORT).show();
                             alertDialog.dismiss();
                         }

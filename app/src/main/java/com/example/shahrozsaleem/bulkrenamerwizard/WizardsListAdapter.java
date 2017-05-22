@@ -24,13 +24,22 @@ public class WizardsListAdapter extends ArrayAdapter<File> {
         super(context, R.layout.wizard_list_item);
         this.context = context;
         this.wizardFiles = wizardFiles;
-        Arrays.sort(wizardFiles, new FileComparator());
+        if( wizardFiles!=null && wizardFiles.length > 0)
+            Arrays.sort(wizardFiles, new FileComparator());
     }
 
 
     @Override
     public int getCount(){
+        if(wizardFiles==null)
+            return  0;
         return wizardFiles.length;
+    }
+
+    void updateAdapter(File[] newFiles) {
+        wizardFiles = newFiles;
+        Arrays.sort(wizardFiles, new FileComparator());
+        notifyDataSetChanged();
     }
 
     @Override

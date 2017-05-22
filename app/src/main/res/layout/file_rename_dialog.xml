@@ -40,7 +40,7 @@
             android:text="Rename"
             android:layout_marginRight="10dp"
             android:background="@drawable/round_button"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textColor="@color/cardview_light_background"
             android:textStyle="bold" />
 
         <Button
@@ -51,7 +51,7 @@
             android:background="@drawable/round_button"
             android:text="Cancel"
             android:layout_marginLeft="10dp"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:textColor="@color/cardview_light_background"
             android:textStyle="bold" />
     </LinearLayout>
 

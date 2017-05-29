@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
@@ -113,7 +114,8 @@ class DuplicateFileRemover {
 
         List<File> dupFiles;
         HashMap<Long, List<File>> map = new HashMap<>();
-        for(int i=0; i<files.size()-1; i++) {
+
+        for(int i=0; i<files.size(); i++) {
             File f = files.get(i);
             long len = f.length();
             if (!map.containsKey(len)) {
@@ -125,24 +127,8 @@ class DuplicateFileRemover {
             }
         }
 
-
-
-            /*File file1 = files.get(i);
-            dupFiles = new ArrayList<File>();
-            for(int j=i+1; j<files.size(); j++) {
-                File file2 = files.get(j);
-                if(isDuplicate(file1, file2)) {
-                    dupCount++;
-                    dupFiles.add(file2);
-                    savedSpace += (file2.length());
-                    files.remove(j);
-                    j--;
-                }
-            }
-            if(!dupFiles.isEmpty())
-                duplicateFiles.put(file1, dupFiles);*/
-
         Iterator<Map.Entry<Long, List<File>>> itr = map.entrySet().iterator();
+
         while (itr.hasNext()){
             Map.Entry<Long, List<File>> entry = itr.next();
             List<File> list = entry.getValue();
@@ -150,16 +136,22 @@ class DuplicateFileRemover {
             for(int i=0; i<list.size()-1; i++){
                 dupFiles = new ArrayList<File>();
                 File file1 = list.get(i);
+                Boolean isDupFound = false;
+                Log.d("Debug", file1.length()+"");
                 for(int j=i+1; j<list.size(); j++) {
                     File file2 = list.get(j);
-                    if(isDuplicate(file1, file2)) {
+                    if(FileUtils.contentEquals(file1, file2)) {
                         dupCount++;
                         dupFiles.add(file2);
                         savedSpace += (file2.length());
                         list.remove(j);
+                        isDupFound = true;
                         j--;
                     }
                 }
+                if(isDupFound)
+                    i--;
+
                 if(!dupFiles.isEmpty()){
                     duplicateFiles.put(file1, dupFiles);
                 }
@@ -168,56 +160,5 @@ class DuplicateFileRemover {
 
     }
 
-
-    private boolean isDuplicate(File f1, File f2) throws IOException{
-
-        if(f1.isDirectory()|| f2.isDirectory())
-            return false;
-
-        if(f1.length()!=f2.length())
-            return false;
-
-        BufferedReader br1 = new BufferedReader(new FileReader(f1));
-        BufferedReader br2 = new BufferedReader(new FileReader(f2));
-
-        char[] buff1 = new char[FILE_COMP];
-        char[] buff2 = new char[FILE_COMP];
-
-        if(f2.length()<=FILE_COMP) {
-            br1.read(buff1);
-            br2.read(buff2);
-
-            for(int i=0; i<FILE_COMP; i++){
-                if(buff1[i]!=buff2[i]) {
-                    br1.close();
-                    br2.close();
-                    return false;
-                }
-            }
-        }
-
-        else {
-
-            int[] nos = new int[FILE_COMP];
-            for(int i=0; i<FILE_COMP; i++)
-                nos[i] = i;
-
-            while(br1.read(buff1)!=-1){
-                br2.read(buff2);
-
-                for(int i=0; i<FILE_COMP; i++){
-                    if(buff1[i]!=buff2[i]){
-                        br1.close();
-                        br2.close();
-                        return false;
-                    }
-                }
-            }
-
-        }
-        br1.close();
-        br2.close();
-        return true;
-    }
 
 }
